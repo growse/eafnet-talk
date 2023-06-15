@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>reveal.js</title>
+    <title>Self-hosting On The Internet</title>
 
     <link rel="stylesheet" href="dist/reset.css">
     <link rel="stylesheet" href="dist/reveal.css">
@@ -31,7 +31,7 @@
             </aside>
         </section>
         <section>
-            The Internet Protocol (IP)
+            <div class="r-fit-text">The Internet Protocol (IP)</div>
             <aside class="notes">So we're going to take a quick refresher through IP. What is it? It's essentially a
                 numbering scheme for nodes in a network. A network is a collection of things that are connected together
                 somehow, and the idea is that you give every node a unique number, or address. A bit like postal
@@ -128,45 +128,44 @@
         </section>
         <section>
             Companies House
-            <aside class="notes"><p>In this country, setting up a company is remarkably cheap and straightforward. You
-                fill out a form, pay a little bit, and you have a company!</p>
+            <aside class="notes" data-markdown>
+                * In this country, setting up a company is remarkably cheap and straightforward.
+                * You fill out a form, pay a little bit, and you have a company!
             </aside>
         </section>
         <section>
-            <img src="img/exploits_of_a_mom.png"/>
-            <aside class="notes"><p>There's a long & rich tradition amongst computery people to try and poke systems
-                that accept some sort of input to see what happens if you give it something it's not necessarily
-                expecting. This XKCD cartoon is probably the best-known illustration of this.</p></aside>
+            <img width="100%" src="img/exploits_of_a_mom.png"/>
+            <aside class="notes" data-markdown>
+                * There's a long & rich tradition amongst computery people to try and poke systems to see what happens
+                * This XKCD cartoon is probably the best-known illustration of this.
+            </aside>
         </section>
         <section>
             <img src="img/drop-table-students-companies-house.png"/>
-            <aside class="notes"><p>And to prove my point, this company actually existed! If you go poke around on the
-                companies house website, you'll find a bunch more like this.</p>
-                <p>I like silly things, so I went and read the rules on what a company name could be.</p>
-                <ul>
-                    <li>max length of 130ish chars</li>
-                    <li>you've got to end with Ltd or Limited (or regional equivs)</li>
-                    <li>You can't use certain reserved words like "Royal" and "Chartered"</li>
-                    <li>Can't be "offensive"</li>
-                </ul>
-                <p>There's a lot of rules</p>
-                <p>So I thought long and hard, and then submitted an application for this:</p>
+            <aside class="notes" data-markdown>
+                * this company actually existed!
+                * Loads more on the companies house website
+                * So what can a name be?
+                * max length of 130ish chars
+                1. you've got to end with Ltd or Limited (or regional equivs)
+                1. You can't use certain reserved words like "Royal" and "Chartered"
+                1. Can't be "offensive"
+                * Ultimately made an application for this
             </aside>
         </section>
         <section>
             <p style="font-size: 1vw">
                 00011011010110110011101100110101001110110011001100110101011011010100010001101111011011100010011101110100001000000101000001100001011011100110100101100011
                 Ltd</p>
-            <aside class="notes"><p>I then waited. And waited some more. Normally, registering a company is pretty
-                quick, you get everything through in a couple of days.</p>
-                <p>A week later, I got a phone call from someone, who was very keen to understand what this particular
-                    string of binary meant. Admittedly, I was perhaps a little obtuse, explaining that it didn't have to
-                    mean anything in particular, and that it met all the requirements. They were a little grumpy, and
-                    then went away.</p>
-                <p>Two months later, I get an email</p></aside>
+            <aside class="notes" data-markdown>
+                * Lots of waiting
+                * Shouldn't normally take this long
+                * After a week, got a call from someone wanting to know what it meant
+                * Two months after tha, I get an email
+            </aside>
         </section>
         <section>
-            <img src="img/companies-house-rejected.png"/>
+            <img width="100%" src="img/companies-house-rejected.png"/>
             <aside class="notes"><p>(Read the email)</p>
                 <p>So yes, I tried to be clever and register the binary representation of some ANSI escape characters (I
                     think bold magenta and flashing) followed by the text "Don't Panic". And the government weren't
@@ -175,15 +174,15 @@
                 <p>Anyhow, I picked a more benign name and admitted defeat.</p></aside>
         </section>
         <section>
-            <img src="img/economic-crime-and-corporate-transparency-bill.png"/>
-            <aside class="notes">
-                What's more amazing is what happened next. A little while later, I learned that there had been a bill
-                proposed by the Home Office. The Economic Crime and Corporate Transparency Bill. It's mostly boring, but
-                let's have a look at Clause 10.
+            <img width="100%" src="img/economic-crime-and-corporate-transparency-bill.png"/>
+            <aside class="notes" data-markdown>
+                * A little while later, discovered a new bill had been proposed by the Home Office
+                * The Economic Crime and Corporate Transparency Bill.
+                * Let's look at clause 10
             </aside>
         </section>
         <section>
-            <img src="img/economic-crime-and-corporate-transparency-bill-clause-10.png"/>
+            <img width="100%" src="img/economic-crime-and-corporate-transparency-bill-clause-10.png"/>
             <aside class="notes" data-markdown>
                 * (read the clause)
                 * Did I annoy the government? Timing is coincidental
@@ -192,27 +191,34 @@
             </aside>
         </section>
         <section>
-            <img src="img/ripe-db.png"/>
+            <img width="80%" src="img/ripe-db.png"/>
             <aside class="notes" data-markdown>
                 * Got everything sorted out, ISP did all the work with RIPE
                 * There's my subnet! 2001:678:b0c::/48
                 * I get a 48, because that's the smallest size you can advertise
                 * Vanity handle
+                * Now that I own an subnet, I need to tell the internet where to send packets for my addresses.
             </aside>
         </section>
         <section>
-            BGP
+            What is the internet?
             <aside class="notes" data-markdown>
-                * Now that I own an subnet, I need to tell the internet where to send packets for my addresses.
-                * Very quickly talk about BGP
-                * What is a router? Device that knows where to send IP packets.
+                * Bunch of routers connected together that know how to route IP packets to a destination
+            </aside>
+        </section>
+        <section>
+            What is a router?
+            <aside class="notes" data-markdown>
+                * What is a router? Device that receives packets and works out where to send them. List of routes in a
+                routing table
                 * Packets have a destination address, router matches to a subnet it knows how to route, sends it to that
                 destination
-                * The internet is basically lots of routers linked together. Each router has *routing table*.
+                * The internet is basically lots of routers linked together.
+                * You probably have one in your house
                 * Let's see an example
             </aside>
         </section>
-        <section><pre><code data-trim data-noescape>$ traceroute -6 www.google.com
+        <section><pre><code class="r-stretch language-shell" data-trim data-noescape>$ traceroute -6 www.google.com
 traceroute to www.google.com (2a00:1450:4009:81f::2004), 30 hops max, 80 byte packets
 1  2001:8b0:c8f:e8b0::1 (2001:8b0:c8f:e8b0::1)  0.405 ms  0.436 ms  0.695 ms
 2  x.witless.thn.aa.net.uk (2001:8b0:0:53::133)  7.590 ms  7.580 ms  7.645 ms
@@ -223,16 +229,18 @@ traceroute to www.google.com (2a00:1450:4009:81f::2004), 30 hops max, 80 byte pa
 7  lhr25s33-in-x04.1e100.net (2a00:1450:4009:81f::2004)  7.788 ms  7.265 ms  7.395 ms</code></pre>
             <aside class="notes" data-markdown>
                 * Example using traceroute
+                * How do routers get their routing tables?
             </aside>
         </section>
         <section>
             Border Gateway Protocol
             <aside class="notes" data-markdown>
-                * How do routers get their routing tables?
                 * BGP!
                 * Old protocol, basically used for routers to advertise routes to other routers.
-                * Routers have many routes, metrics, loop detection
+                * Routers have many routes, fun features like metrics, loop detection
                 * Constant flux and chatter
+                * Source of many hilarious outages (Facebook, tiny ISP deciding to route all of youtube through itself
+                etc.)
             </aside>
         </section>
         <section>
@@ -241,26 +249,27 @@ traceroute to www.google.com (2a00:1450:4009:81f::2004), 30 hops max, 80 byte pa
                 * BGP uses concept of Autonomous system
                 * Want to advertise routes? Need an AS.
                 * Got mine from RIPE along with my subnet.
+                * About 31.5k AS's active, of which 20k are only publishing 1 prefix
+                * To advertise, I need to find a router that'll accept a BGP advert.
+                * Could maybe use my home internet connection
             </aside>
         </section>
         <section>
             <img src="img/vultr.png"/>
             <aside class="notes" data-markdown>
-                * To advertise, I need to find a router that'll accept a BGP advert.
-                * Could maybe use my home internet connection
                 * Actually easier to find a friendly hosting company
                 * Vultr have lots of locations, and are cheap
             </aside>
         </section>
         <section>
-            gobgpd
+            Linux + gobgpd
             <aside class="notes" data-markdown>
                 * Spin up a linux VM
                 * Install a BGP daemon (BIRD / Quagga are old, newer ones are easier)
                 * Get the details from Vultr about where to BGP peer with
             </aside>
         </section>
-        <section><pre><code class="language-shell" data-line-numbers="4,6">$ ip addr show dev enp1s0
+        <section><pre><code class="r-stretch language-shell" data-line-numbers="4,6">$ ip addr show dev enp1s0
 2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq state UP group default qlen 1000
     link/ether 56:00:04:29:1f:39 brd ff:ff:ff:ff:ff:ff
     inet6 2001:19f0:7400:8287:5400:4ff:fe29:1f39/64 scope global dynamic mngtmpaddr noprefixroute
@@ -293,6 +302,7 @@ default via fe80::fc00:4ff:fe29:1f39 dev enp1s0 proto ra metric 1024 expires 137
             <aside class="notes" data-markdown>
                 * Routing Information Base (RIB) of the linux VM.
                 * Received a default route from Vultr
+                * Also the RIB knows about a subnet from the local routing table
             </aside>
         </section>
         <section><pre><code class="language-shell">$ gobgp ne 2001:19f0:ffff::1 adj-out
@@ -305,9 +315,29 @@ ID  Network                  Next Hop                               AS_PATH     
         </section>
         <section>
             Does it work?
+            <aside class="notes" data-markdown>
+                * Let's try and do a traceroute
+            </aside>
         </section>
         <section>
-            <pre><code data-trim>64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=11 ttl=56 time=8.62 ms
+            <pre><code class="r-stretch language-shell" style="font-size: 0.7em; line-height: 1em;">$ traceroute 2001:678:b0c:0:68:74:74:70
+traceroute to 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70), 30 hops max, 80 byte packets
+ 1  2001:8b0:c8f:e8b0::1 (2001:8b0:c8f:e8b0::1)  1.879 ms  1.986 ms  2.311 ms
+ 2  x.witless.thn.aa.net.uk (2001:8b0:0:53::133)  8.994 ms  8.558 ms  9.225 ms
+ 3  k-aimless.thn.aa.net.uk (2001:8b0:0:53::101)  9.164 ms  9.101 ms  9.036 ms
+ 4  ns2.choopa.com (2001:7f8:4::4ff9:1)  9.758 ms  9.693 ms  9.632 ms
+ 5  ethernetae1-sr2.lon3.constant.com (2001:19f0:fc00::a45:34a)  9.571 ms ethernetae7-sr1.lon3.constant.com (2001:19f0:fc00::a45:346)  9.508 ms ethernetae1-sr2.lon3.constant.com (2001:19f0:fc00::a45:34a)  9.796 ms
+ 6  vl534-ds1-m2-r52b3-a.lon3.constant.com (2001:19f0:fc00::a45:292)  8.954 ms  8.175 ms vl535-ds1-m2-r52b3-b.lon3.constant.com (2001:19f0:fc00::a45:29a)  8.713 ms
+ 7  * * *
+ 8  2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70)  9.032 ms  8.972 ms  8.915 ms</code></pre>
+            <aside class="notes" data-markdown>
+                * It works!
+                * Can follow the path from my internet connection to Vultr
+                * How responsive is it?
+            </aside>
+        </section>
+        <section>
+            <pre><code style="font-size: 0.7em; line-height: 1em;" class="r-stretch" data-trim>64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=11 ttl=56 time=8.62 ms
 64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=12 ttl=56 time=8.79 ms
 64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=13 ttl=56 time=8.48 ms
 64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=14 ttl=56 time=7.53 ms
@@ -320,9 +350,65 @@ From lag-19.ear3.Amsterdam1.Level3.net (2001:1900:5:3::179) icmp_seq=21 Time exc
 64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=33 ttl=56 time=8.85 ms
 64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=34 ttl=56 time=8.77 ms
             </code></pre>
+            <aside class="notes" data-markdown>
+                * Pretty amazing
+                * Trying different routes when it goes down
+                * Let's put a webserver up there for tasty content
+            </aside>
         </section>
         <section>
-            <img src="img/eafnosupport.co.uk.img"/>
+            <img width="100%" src="img/eafnosupport.co.uk.img"/>
+            <aside class="notes" data-markdown>
+                * We're done. Self-hosted content on our own IP that we can take to different providers as we like
+            </aside>
+        </section>
+        <section>
+            But wait!
+            <aside class="notes" data-markdown>
+                * Hang on a minute, what there are more than place a destination is published?
+                * Let's find out
+                * Spun up another VM in chicago, configured it the same way.
+                * Turned off London, let's traceroute
+            </aside>
+        </section>
+        <section>
+            <pre><code style="font-size: 0.7em; line-height: 1em;" class="r-stretch">$ traceroute 2001:678:b0c:0:68:74:74:70
+traceroute to 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70), 30 hops max, 80 byte packets
+ 1  2001:8b0:c8f:e8b0::1 (2001:8b0:c8f:e8b0::1)  1.530 ms  2.160 ms  2.476 ms
+ 2  x.witless.thn.aa.net.uk (2001:8b0:0:53::133)  8.316 ms  8.413 ms  8.731 ms
+ 3  ITAF.bar2.Brussels1.Level3.net (2001:1900:5:2:2::33ce)  8.671 ms  8.615 ms  8.557 ms
+ 4  * * *
+ 5  lo-0-v6.ear4.Chicago2.Level3.net (2001:1900::3:1af)  98.397 ms  98.952 ms  98.615 ms
+ 6  CHOOPA-LLC.ear4.Chicago2.Level3.net (2001:1900:2100::40ce)  104.251 ms  97.165 ms  99.711 ms
+ 7  vl838-ds1-u2-dl109-a.chi2.constant.com (2001:19f0:fc00::a43:152)  96.065 ms ethernetae6-er1.chi2.constant.com (2001:19f0:fc00::a43:8a)  98.804 ms  99.353 ms
+ 8  vl578-ds1-m2-it102-a.chi2.constant.com (2001:19f0:fc00::a43:222)  99.288 ms vl579-ds1-m2-it102-b.chi2.constant.com (2001:19f0:fc00::a43:22a)  99.224 ms vl578-ds1-m2-it102-a.chi2.constant.com (2001:19f0:fc00::a43:222)  95.312 ms
+ 9  * * *
+10  2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70)  96.446 ms  95.966 ms  95.512 ms</code></pre>
+        </section>
+        <section>
+            <img width="100%" src="img/eafnosupport-us.co.uk.png" />
+            <aside class="notes" data-markdown>
+                * Now web request hits the us server
+            </aside>
+        </section>
+        <section>
+            Anycasting
+            <aside class="notes" data-markdown>
+                * Having multiple up is called Anycasting
+                * common technique of CDNs to optimize content delivery
+                * Routing rules means that clients will hit their "closest" endpoint
+                * Also, good resilience
+                * Gotchas include tying service availability to route publishing
+            </aside>
+        </section>
+        <section>
+            <img src="img/anycast-traceroute.png" />
+            <aside class="notes" data-markdown>
+                * Just to prove it works
+            </aside>
+        </section>
+        <section>
+            ?
         </section>
     </div>
 </div>
