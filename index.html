@@ -1,40 +1,346 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+    <title>reveal.js</title>
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/growse.css">
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>Self-hosting On The Internet</h1>
+            <h2>The Internet Protocol,</h2>
+            <h2>BGP,</h2>
+            <h2>The Law,</h2>
+            <h2>and YOU!</h2>
+            <footer>Andrew Rowson, June 16th 2023</footer>
+            <aside class="notes">
+                Introduction. My name is etc. Full-time opinion-haver, full-time parent, part-time tinkerer,
+                Going to talk about a silly idea I had a while back, which was to try and work out what it would take to
+                self-host something on the internet, and maybe try and use my own IP address. You can already buy and
+                "own" a domain name, so why can't you buy and "own" some IP addresses?
+            </aside>
+        </section>
+        <section>
+            The Internet Protocol (IP)
+            <aside class="notes">So we're going to take a quick refresher through IP. What is it? It's essentially a
+                numbering scheme for nodes in a network. A network is a collection of things that are connected together
+                somehow, and the idea is that you give every node a unique number, or address. A bit like postal
+                addresses, if you want to identify a node so that you can maybe send things to it, you can refer to it
+                by its address.
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+                So what does an IP address look like?
+            </aside>
+        </section>
+        <section>1
+            <aside class="notes">Well, this is an address. It's the number "1".
+            </aside>
+        </section>
+        <section>
+            42541014265448851428341158021258918306
+            <aside class="notes">
+                <p>This is another address. It's quite a large number.</p>
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+                <p>So we have a very simple scheme here. Now, because we're dealing with computers, it's handy to have
+                    these numbers be fixed-width, essentially meaning that we use the same amount of data to represent
+                    each number. Computers are not very good at dealing with bits of data that can be arbitrary size -
+                    if you can guarantee that a piece of data can fit within a range, things become a lot more
+                    efficient to handle. So a while back, we decided that the IP address should be a 128-bit number.</p>
+                <p>This gives us a lot of numbers to use. How many?</p>
+
+            </aside>
+        </section>
+        <section>
+            3.4 x 10<sup>38</sup>
+            <aside class="notes">
+                <p>This many. This is a lot. 340 trillion trillion trillion.</p>
+                <p>The scale of big numbers are hard to grasp, so by point of comparison, this is enough addresses to
+                    give an address to every atom on the surface of the earth, and still have about 99% of the address
+                    space unused. We could give 4x 10<sup>15</sup> to every star in the observable universe. And each
+                    address fits in 16 bytes.</p>
+                <p>Now a big flat list of numbers is not very practical, so we like to think of the address space in a
+                    hierarchy, a bit like the postal address service. That uses a hierarchy of Country, County, Town,
+                    Street and number to uniquely identify an address. So what does this look like for IP?</p>
+            </aside>
+        </section>
+        <section>2001:19f0:7400:8287:5400:04ff:fe29:1f39
+            <aside class="notes"><p>So we take our 16 byte number, and chop it up into 8 groups of 2 bytes. We then
+                represent each byte in hexadecimal rather than decimal (because that means we only need 2 characters per
+                byte, 00-ff). We separate each group with a colon, and we end up at this.</p>
+                <p>This is the same address as the address I showed you before. What does the address of "1" look
+                    like?</p>
+            </aside>
+        </section>
+        <section>0000:0000:0000:0000:0000:0000:0000:0000:0001
+            <aside class="notes">This is "1". But it's a bit clumsy, so we'll strip leading zeros off groups and
+                collapse adjacent groups of all zeros to get this
+            </aside>
+        </section>
+        <section>::1
+            <aside class="notes">Much better. This is actually a special address in our scheme, does anyone know what
+                this address represents?
+            </aside>
+        </section>
+        <section>
+            2001:678:b0c::/48
+            <aside class="notes"><p>A final point on addressing, we need a way to refer to a block of adjacent
+                addresses. So we use this notation to represent a group of addresses, also called a subnet.</p>
+                <p>This notation basically means "All the addresses for which the left-most 48-bits are 2001:678:b0c".
+                    48-bites is 3 groups of 16, so basically any address for which the 3 left-most groups are these is
+                    in this subnet.
+
+                    Bigger the subnet mask, the *smaller* (fewer addresses) the subnet.
+                </p></aside>
+        </section>
+        <section>
+            Internet Assigned Numbers Authority (IANA)
+            <aside class="notes"><p>So let's talk about ownership. Who owns and decides who gets to control a subnet, or
+                group of addresses?</p>
+                <p>Well, that's IANA. They "own" all the addresses. Much like how ICANN "own" all the domain names.</p>
+                <p>Now, IANA delegates control down to different geographical regions, so for the purposes of use, we
+                    care about RIPE</p></aside>
+        </section>
+        <section>
+            Réseaux IP Européens (RIPE)
+            <aside class="notes"><p>RIPE is the European Regional Internet Registry (RIR). Obviously, being European,
+                it's got a French name.</p>
+                <p>So, if you want to get an IP subnet assigned to you, you just go to RIPE and ask for one, right?</p>
+                <p>Well, yes. Except you have to become a member first. And that involves paying them quite a lot of
+                    money, every year. Thankfully, there's a useful workaround where if you can find an organisation who
+                    is already a member, you can ask them to sponsor you and get an allocation that way. They might
+                    charge you a small fee to cover their costs, but it's much much cheaper.</p>
+                <p>Usefully, my ISP is a RIPE member who's happy to sponsor requests for addresses.</p>
+                <p>Now, when you get resources allocated, it's generally a bad idea to get them allocated to an
+                    individual. This is because people are messy - they lose interest, die, etc. and so you can end up
+                    with a bunch of resources allocated to legal entities who are no longer interested or able to manage
+                    them. So even if they're not used, it's difficult to reclaim. The general advice is to create a
+                    legal entity to allocate the network to, and then ownership of that entity can be much more easily
+                    transferred around. So, let's go talk to the government!</p></aside>
+        </section>
+        <section>
+            Companies House
+            <aside class="notes"><p>In this country, setting up a company is remarkably cheap and straightforward. You
+                fill out a form, pay a little bit, and you have a company!</p>
+            </aside>
+        </section>
+        <section>
+            <img src="img/exploits_of_a_mom.png"/>
+            <aside class="notes"><p>There's a long & rich tradition amongst computery people to try and poke systems
+                that accept some sort of input to see what happens if you give it something it's not necessarily
+                expecting. This XKCD cartoon is probably the best-known illustration of this.</p></aside>
+        </section>
+        <section>
+            <img src="img/drop-table-students-companies-house.png"/>
+            <aside class="notes"><p>And to prove my point, this company actually existed! If you go poke around on the
+                companies house website, you'll find a bunch more like this.</p>
+                <p>I like silly things, so I went and read the rules on what a company name could be.</p>
+                <ul>
+                    <li>max length of 130ish chars</li>
+                    <li>you've got to end with Ltd or Limited (or regional equivs)</li>
+                    <li>You can't use certain reserved words like "Royal" and "Chartered"</li>
+                    <li>Can't be "offensive"</li>
+                </ul>
+                <p>There's a lot of rules</p>
+                <p>So I thought long and hard, and then submitted an application for this:</p>
+            </aside>
+        </section>
+        <section>
+            <p style="font-size: 1vw">
+                00011011010110110011101100110101001110110011001100110101011011010100010001101111011011100010011101110100001000000101000001100001011011100110100101100011
+                Ltd</p>
+            <aside class="notes"><p>I then waited. And waited some more. Normally, registering a company is pretty
+                quick, you get everything through in a couple of days.</p>
+                <p>A week later, I got a phone call from someone, who was very keen to understand what this particular
+                    string of binary meant. Admittedly, I was perhaps a little obtuse, explaining that it didn't have to
+                    mean anything in particular, and that it met all the requirements. They were a little grumpy, and
+                    then went away.</p>
+                <p>Two months later, I get an email</p></aside>
+        </section>
+        <section>
+            <img src="img/companies-house-rejected.png"/>
+            <aside class="notes"><p>(Read the email)</p>
+                <p>So yes, I tried to be clever and register the binary representation of some ANSI escape characters (I
+                    think bold magenta and flashing) followed by the text "Don't Panic". And the government weren't
+                    having any of it, although I find their reasoning somewhat specious. Who's going to "execute" a
+                    company name?</p>
+                <p>Anyhow, I picked a more benign name and admitted defeat.</p></aside>
+        </section>
+        <section>
+            <img src="img/economic-crime-and-corporate-transparency-bill.png"/>
+            <aside class="notes">
+                What's more amazing is what happened next. A little while later, I learned that there had been a bill
+                proposed by the Home Office. The Economic Crime and Corporate Transparency Bill. It's mostly boring, but
+                let's have a look at Clause 10.
+            </aside>
+        </section>
+        <section>
+            <img src="img/economic-crime-and-corporate-transparency-bill-clause-10.png"/>
+            <aside class="notes" data-markdown>
+                * (read the clause)
+                * Did I annoy the government? Timing is coincidental
+                * This isn't law yet, on its way to 3rd reading in the Lords.
+                * This is your tax money at work!
+            </aside>
+        </section>
+        <section>
+            <img src="img/ripe-db.png"/>
+            <aside class="notes" data-markdown>
+                * Got everything sorted out, ISP did all the work with RIPE
+                * There's my subnet! 2001:678:b0c::/48
+                * I get a 48, because that's the smallest size you can advertise
+                * Vanity handle
+            </aside>
+        </section>
+        <section>
+            BGP
+            <aside class="notes" data-markdown>
+                * Now that I own an subnet, I need to tell the internet where to send packets for my addresses.
+                * Very quickly talk about BGP
+                * What is a router? Device that knows where to send IP packets.
+                * Packets have a destination address, router matches to a subnet it knows how to route, sends it to that
+                destination
+                * The internet is basically lots of routers linked together. Each router has *routing table*.
+                * Let's see an example
+            </aside>
+        </section>
+        <section><pre><code data-trim data-noescape>$ traceroute -6 www.google.com
+traceroute to www.google.com (2a00:1450:4009:81f::2004), 30 hops max, 80 byte packets
+1  2001:8b0:c8f:e8b0::1 (2001:8b0:c8f:e8b0::1)  0.405 ms  0.436 ms  0.695 ms
+2  x.witless.thn.aa.net.uk (2001:8b0:0:53::133)  7.590 ms  7.580 ms  7.645 ms
+3  o.aimless.tch.aa.net.uk (2001:8b0:0:53::105)  7.685 ms  7.958 ms  7.898 ms
+4  2001:4860:1:1::1592 (2001:4860:1:1::1592)  8.058 ms  8.050 ms  8.104 ms
+5  2001:4860:0:1100::1 (2001:4860:0:1100::1)  7.983 ms  7.908 ms 2001:4860::12:0:b229 (2001:4860::12:0:b229)  8.865 ms
+6  2001:4860:0:1::54cf (2001:4860:0:1::54cf)  8.152 ms 2001:4860:0:1::54d1 (2001:4860:0:1::54d1)  7.416 ms 2001:4860:0:1::54cf (2001:4860:0:1::54cf)  7.742 ms
+7  lhr25s33-in-x04.1e100.net (2a00:1450:4009:81f::2004)  7.788 ms  7.265 ms  7.395 ms</code></pre>
+            <aside class="notes" data-markdown>
+                * Example using traceroute
+            </aside>
+        </section>
+        <section>
+            Border Gateway Protocol
+            <aside class="notes" data-markdown>
+                * How do routers get their routing tables?
+                * BGP!
+                * Old protocol, basically used for routers to advertise routes to other routers.
+                * Routers have many routes, metrics, loop detection
+                * Constant flux and chatter
+            </aside>
+        </section>
+        <section>
+            AS204946
+            <aside class="notes" data-markdown>
+                * BGP uses concept of Autonomous system
+                * Want to advertise routes? Need an AS.
+                * Got mine from RIPE along with my subnet.
+            </aside>
+        </section>
+        <section>
+            <img src="img/vultr.png"/>
+            <aside class="notes" data-markdown>
+                * To advertise, I need to find a router that'll accept a BGP advert.
+                * Could maybe use my home internet connection
+                * Actually easier to find a friendly hosting company
+                * Vultr have lots of locations, and are cheap
+            </aside>
+        </section>
+        <section>
+            gobgpd
+            <aside class="notes" data-markdown>
+                * Spin up a linux VM
+                * Install a BGP daemon (BIRD / Quagga are old, newer ones are easier)
+                * Get the details from Vultr about where to BGP peer with
+            </aside>
+        </section>
+        <section><pre><code class="language-shell" data-line-numbers="4,6">$ ip addr show dev enp1s0
+2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq state UP group default qlen 1000
+    link/ether 56:00:04:29:1f:39 brd ff:ff:ff:ff:ff:ff
+    inet6 2001:19f0:7400:8287:5400:4ff:fe29:1f39/64 scope global dynamic mngtmpaddr noprefixroute
+       valid_lft 2591722sec preferred_lft 604522sec
+    inet6 2001:678:b0c:0:68:74:74:70/48 scope global deprecated
+       valid_lft forever preferred_lft 0sec
+    inet6 fe80::5400:4ff:fe29:1f39/64 scope link
+       valid_lft forever preferred_lft forever</code></pre>
+            <aside class="notes" data-markdown>
+                * Host has its own IP address
+                * I've added the address from my block for a service I want to run.
+            </aside>
+        </section>
+        <section>
+            <pre><code data-trim data-noescape data-line-numbers="3-4" class="language-shell">$ ip -6 route
+::1 dev lo proto kernel metric 256 pref medium
+2001:678:b0c::/48 dev enp1s0 proto kernel metric 256 pref medium
+2001:19f0:7400:8287::/64 dev enp1s0 proto ra metric 1024 expires 2591571sec pref medium
+fe80::/64 dev enp1s0 proto kernel metric 256 pref medium
+default via fe80::fc00:4ff:fe29:1f39 dev enp1s0 proto ra metric 1024 expires 1371sec mtu 1500 pref medium</code></pre>
+            <aside class="notes" data-markdown>
+                * Routing table from the linux machine.
+                * Note that it knows how to route
+            </aside>
+        </section>
+        <section><pre><code class="language-shell">$ gobgp global rib -a ipv6
+   Network                  Next Hop             AS_PATH              Age        Attrs
+*> ::/0                     2001:19f0:ffff::1    64515                16:13:23   [{Origin: i} {Med: 0}]
+*> 2001:678:b0c::/48        ::                                        00:10:10   [{Origin: i} {Med: 0}]</code></pre>
+            <aside class="notes" data-markdown>
+                * Routing Information Base (RIB) of the linux VM.
+                * Received a default route from Vultr
+            </aside>
+        </section>
+        <section><pre><code class="language-shell">$ gobgp ne 2001:19f0:ffff::1 adj-out
+ID  Network                  Next Hop                               AS_PATH              Attrs
+1   2001:678:b0c::/48        2001:19f0:7400:8287:5400:4ff:fe29:1f39 204946               [{Origin: i} {Med: 0}]</code></pre>
+            <aside class="notes" data-markdown>
+                * This is what it's publishing to Vultr
+                * Shows Next hop as self, and AS_PATH as me!
+            </aside>
+        </section>
+        <section>
+            Does it work?
+        </section>
+        <section>
+            <pre><code data-trim>64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=11 ttl=56 time=8.62 ms
+64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=12 ttl=56 time=8.79 ms
+64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=13 ttl=56 time=8.48 ms
+64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=14 ttl=56 time=7.53 ms
+64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=15 ttl=56 time=8.04 ms
+From k-aimless.thn.aa.net.uk (2001:8b0:0:53::101) icmp_seq=16 Destination unreachable: No route
+From 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70) icmp_seq=17 Destination unreachable: No route
+From be2540.ccr42.lon13.atlas.cogentco.com (2001:550:0:1000::8275:365) icmp_seq=18 Time exceeded: Hop limit
+From be2540.rcr21.b015589-1.lon13.atlas.cogentco.com (2001:550:0:1000::8275:366) icmp_seq=19 Destination unreachable: No route
+From lag-19.ear3.Amsterdam1.Level3.net (2001:1900:5:3::179) icmp_seq=21 Time exceeded: Hop limit
+64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=33 ttl=56 time=8.85 ms
+64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=34 ttl=56 time=8.77 ms
+            </code></pre>
+        </section>
+        <section>
+            <img src="img/eafnosupport.co.uk.img"/>
+        </section>
+    </div>
+</div>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+</script>
+</body>
 </html>
