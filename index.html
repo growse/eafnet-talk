@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="dist/theme/growse.css">
 
     <!-- Theme used for syntax highlighted code -->
-    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+    <link rel="stylesheet" href="plugin/highlight/zenburn.css">
 </head>
 <body>
 <div class="reveal">
@@ -23,22 +23,23 @@
             <h2>The Law,</h2>
             <h2>and YOU!</h2>
             <footer>Andrew Rowson, June 16th 2023</footer>
-            <aside class="notes">
-                Introduction. My name is etc. Full-time opinion-haver, full-time parent, part-time tinkerer,
-                Going to talk about a silly idea I had a while back, which was to try and work out what it would take to
-                self-host something on the internet, and maybe try and use my own IP address. You can already buy and
-                "own" a domain name, so why can't you buy and "own" some IP addresses?
+            <aside class="notes" data-markdown>
+                * Hi everyone
+                * My name is etc. Full-time opinion-haver, full-time parent, part-time tinkerer.
+                * Going to talk about a silly idea, what would it mean to self-host on *my* IP address
+                * You can already buy and "own" a domain name, so why can't you buy and "own" some IP addresses?
+                * Disclaimer for people who know things, I'm going to be over-simplifying some bits for clarity
             </aside>
         </section>
         <section>
             <div class="r-fit-text">The Internet Protocol (IP)</div>
-            <aside class="notes">So we're going to take a quick refresher through IP. What is it? It's essentially a
-                numbering scheme for nodes in a network. A network is a collection of things that are connected together
-                somehow, and the idea is that you give every node a unique number, or address. A bit like postal
-                addresses, if you want to identify a node so that you can maybe send things to it, you can refer to it
-                by its address.
-
-                So what does an IP address look like?
+            <aside class="notes" data-markdown>
+                * Quick refresher course on IP
+                * Numbering scheme for nodes in a network.
+                * A network is a collection of things that are connected together somehow
+                * give every node a unique number, or address.
+                * Postal address analogy. Give everything a unique address, and then you can send stuff to places
+                * So what does an IP address look like?
             </aside>
         </section>
         <section>1
@@ -46,85 +47,78 @@
             </aside>
         </section>
         <section>
-            42541014265448851428341158021258918306
-            <aside class="notes">
-                <p>This is another address. It's quite a large number.</p>
-
-                <p>So we have a very simple scheme here. Now, because we're dealing with computers, it's handy to have
-                    these numbers be fixed-width, essentially meaning that we use the same amount of data to represent
-                    each number. Computers are not very good at dealing with bits of data that can be arbitrary size -
-                    if you can guarantee that a piece of data can fit within a range, things become a lot more
-                    efficient to handle. So a while back, we decided that the IP address should be a 128-bit number.</p>
-                <p>This gives us a lot of numbers to use. How many?</p>
-
+            <span class="smaller-text">42541014265448851428341158021258918306</span>
+            <aside class="notes" data-markdown>
+                * Another address
+                * Simple scheme, give everything a number
+                * Computers like numbers, especially fixed-width. Bad at variable width.
+                * We decided IPs should be 128-bits
+                * Old, experimental version of the internet that uses 32
+                * 128 gives us a lot. How many?
             </aside>
         </section>
         <section>
             3.4 x 10<sup>38</sup>
-            <aside class="notes">
-                <p>This many. This is a lot. 340 trillion trillion trillion.</p>
-                <p>The scale of big numbers are hard to grasp, so by point of comparison, this is enough addresses to
-                    give an address to every atom on the surface of the earth, and still have about 99% of the address
-                    space unused. We could give 4x 10<sup>15</sup> to every star in the observable universe. And each
-                    address fits in 16 bytes.</p>
-                <p>Now a big flat list of numbers is not very practical, so we like to think of the address space in a
-                    hierarchy, a bit like the postal address service. That uses a hierarchy of Country, County, Town,
-                    Street and number to uniquely identify an address. So what does this look like for IP?</p>
+            <aside class="notes" data-markdown>
+                * 340 trillion trillion trillion.
+                * Big numbers hard to reason about. 1% is atoms on earth surface. 4x10^15 addresses for each star in the
+                universe
+                * Each address just 16 bytes.
+                * How de we create a hierarchy? Like other addressing schemes (postal)
             </aside>
         </section>
-        <section>2001:19f0:7400:8287:5400:04ff:fe29:1f39
-            <aside class="notes"><p>So we take our 16 byte number, and chop it up into 8 groups of 2 bytes. We then
-                represent each byte in hexadecimal rather than decimal (because that means we only need 2 characters per
-                byte, 00-ff). We separate each group with a colon, and we end up at this.</p>
-                <p>This is the same address as the address I showed you before. What does the address of "1" look
-                    like?</p>
+        <section><span class="smaller-text">2001<mark>:</mark>19f0<mark>:</mark>7400<mark>:</mark>8287<mark>:</mark>5400<mark>:</mark>04ff<mark>:</mark>fe29<mark>:</mark>1f39</span>
+            <aside class="notes" data-markdown>
+                * 16 bytes becomes 8 groups of 2 bytes.
+                * each 2 byte (or 16 bit) group can be displayed as two hex chars
+                * Put a colon between each group
+                * Idea is that you read from less specific to more, left-to-right
+                * This is the same address as that big long address I showed before
+                * What does "1" look like?
             </aside>
         </section>
-        <section>0000:0000:0000:0000:0000:0000:0000:0000:0001
-            <aside class="notes">This is "1". But it's a bit clumsy, so we'll strip leading zeros off groups and
-                collapse adjacent groups of all zeros to get this
-            </aside>
-        </section>
-        <section>::1
-            <aside class="notes">Much better. This is actually a special address in our scheme, does anyone know what
-                this address represents?
+        <section><span class="smaller-text">0000<mark>:</mark>0000<mark>:</mark>0000<mark>:</mark>0000<mark>:</mark>0000<mark>:</mark>0000<mark>:</mark>0000<mark>:</mark>0000<mark>:</mark>0001</span>
+            <aside class="notes" data-markdown>
+                * Bit clumsy
+                * Take leading zeros off each group, collapse adjacent groups of all zeros
             </aside>
         </section>
         <section>
-            2001:678:b0c::/48
-            <aside class="notes"><p>A final point on addressing, we need a way to refer to a block of adjacent
-                addresses. So we use this notation to represent a group of addresses, also called a subnet.</p>
-                <p>This notation basically means "All the addresses for which the left-most 48-bits are 2001:678:b0c".
-                    48-bites is 3 groups of 16, so basically any address for which the 3 left-most groups are these is
-                    in this subnet.
-
-                    Bigger the subnet mask, the *smaller* (fewer addresses) the subnet.
-                </p></aside>
+            <mark>::</mark>1
+            <aside class="notes" data-markdown>
+                * Much better
+                * Who knows what this is?
+            </aside>
+        </section>
+        <section>
+            2001<mark>:</mark>678<mark>:</mark>b0c<mark>::</mark>/48
+            <aside class="notes" data-markdown>
+                * Final bit, need a notation for a block of addresses (subnet)
+                * This means left-most 48 bits (3 groups of 16 bits) are 2001:678:b0c
+                * The bigger this slash number, the *fewer* addresses in the block, getting more specific
+                * Who owns and decides who gets to control a subnet?
+            </aside>
         </section>
         <section>
             Internet Assigned Numbers Authority (IANA)
-            <aside class="notes"><p>So let's talk about ownership. Who owns and decides who gets to control a subnet, or
-                group of addresses?</p>
-                <p>Well, that's IANA. They "own" all the addresses. Much like how ICANN "own" all the domain names.</p>
-                <p>Now, IANA delegates control down to different geographical regions, so for the purposes of use, we
-                    care about RIPE</p></aside>
+            <aside class="notes" data-markdown>
+                * IANA
+                * Bit like ICANN for domains
+                * IANA have regional structure. We're in Europe, so RIPE
+            </aside>
         </section>
         <section>
             Réseaux IP Européens (RIPE)
-            <aside class="notes"><p>RIPE is the European Regional Internet Registry (RIR). Obviously, being European,
-                it's got a French name.</p>
-                <p>So, if you want to get an IP subnet assigned to you, you just go to RIPE and ask for one, right?</p>
-                <p>Well, yes. Except you have to become a member first. And that involves paying them quite a lot of
-                    money, every year. Thankfully, there's a useful workaround where if you can find an organisation who
-                    is already a member, you can ask them to sponsor you and get an allocation that way. They might
-                    charge you a small fee to cover their costs, but it's much much cheaper.</p>
-                <p>Usefully, my ISP is a RIPE member who's happy to sponsor requests for addresses.</p>
-                <p>Now, when you get resources allocated, it's generally a bad idea to get them allocated to an
-                    individual. This is because people are messy - they lose interest, die, etc. and so you can end up
-                    with a bunch of resources allocated to legal entities who are no longer interested or able to manage
-                    them. So even if they're not used, it's difficult to reclaim. The general advice is to create a
-                    legal entity to allocate the network to, and then ownership of that entity can be much more easily
-                    transferred around. So, let's go talk to the government!</p></aside>
+            <aside class="notes" data-markdown>
+                * European Regional Internet Registry (RIR).
+                * Obviously, being European, it's got a French name.
+                * Simply call RIPE and ask
+                * Membership! Fees!
+                * Sponsoring LIR
+                * My ISP will sponsor
+                * Not good to use a person, create some other legal entity
+                * Let's go talk to the government
+            </aside>
         </section>
         <section>
             Companies House
@@ -154,38 +148,44 @@
             </aside>
         </section>
         <section>
-            <p style="font-size: 1vw">
+            <span style="font-size: 1vw">
                 00011011010110110011101100110101001110110011001100110101011011010100010001101111011011100010011101110100001000000101000001100001011011100110100101100011
-                Ltd</p>
+                Ltd</span>
             <aside class="notes" data-markdown>
                 * Lots of waiting
                 * Shouldn't normally take this long
                 * After a week, got a call from someone wanting to know what it meant
+                * What does it actually mean? Binary representation of some ANSI escape chars (magenta and flashing)
+                plus "Don't Panic"
                 * Two months after tha, I get an email
             </aside>
         </section>
         <section>
             <img width="100%" src="img/companies-house-rejected.png"/>
-            <aside class="notes"><p>(Read the email)</p>
-                <p>So yes, I tried to be clever and register the binary representation of some ANSI escape characters (I
-                    think bold magenta and flashing) followed by the text "Don't Panic". And the government weren't
-                    having any of it, although I find their reasoning somewhat specious. Who's going to "execute" a
-                    company name?</p>
-                <p>Anyhow, I picked a more benign name and admitted defeat.</p></aside>
+            <aside class="notes" data-markdown>
+                * Read the email
+                * Tried to be clever
+                * Someone obviously spoke to someone else and they worked out the puzzle
+                * Anyhow, I picked a more benign name and admitted defeat.
+            </aside>
         </section>
         <section>
             <img width="100%" src="img/economic-crime-and-corporate-transparency-bill.png"/>
             <aside class="notes" data-markdown>
-                * A little while later, discovered a new bill had been proposed by the Home Office
-                * The Economic Crime and Corporate Transparency Bill.
-                * Let's look at clause 10
+                * That email was received May 2022
+                * 3 months later, September 2022, a bill is presented to the Commons for its first reading
+                * The Economic Crime and Corporate Transparency Bill. Anti-crime bill, targeting money laundering etc.
+                reform of companies house
+                * Fun bit of the 2nd commons reading debate from Alison Thewliss "a good chunk of the [companies house]
+                register is absolute guff"
+                * However, let's look at clause 10
             </aside>
         </section>
         <section>
             <img width="100%" src="img/economic-crime-and-corporate-transparency-bill-clause-10.png"/>
             <aside class="notes" data-markdown>
                 * (read the clause)
-                * Did I annoy the government? Timing is coincidental
+                * Did I do this? Probably not. Fun though!
                 * This isn't law yet, on its way to 3rd reading in the Lords.
                 * This is your tax money at work!
             </aside>
@@ -218,7 +218,7 @@
                 * Let's see an example
             </aside>
         </section>
-        <section><pre><code class="r-stretch language-shell" data-trim data-noescape>$ traceroute -6 www.google.com
+        <section><pre><code class="r-stretch language-bash smaller-text" data-trim data-noescape>$ traceroute -6 www.google.com
 traceroute to www.google.com (2a00:1450:4009:81f::2004), 30 hops max, 80 byte packets
 1  2001:8b0:c8f:e8b0::1 (2001:8b0:c8f:e8b0::1)  0.405 ms  0.436 ms  0.695 ms
 2  x.witless.thn.aa.net.uk (2001:8b0:0:53::133)  7.590 ms  7.580 ms  7.645 ms
@@ -269,7 +269,7 @@ traceroute to www.google.com (2a00:1450:4009:81f::2004), 30 hops max, 80 byte pa
                 * Get the details from Vultr about where to BGP peer with
             </aside>
         </section>
-        <section><pre><code class="r-stretch language-shell" data-line-numbers="4,6">$ ip addr show dev enp1s0
+        <section><pre><code class="r-stretch language-bash smaller-text" data-line-numbers="4,6">$ ip addr show dev enp1s0
 2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq state UP group default qlen 1000
     link/ether 56:00:04:29:1f:39 brd ff:ff:ff:ff:ff:ff
     inet6 2001:19f0:7400:8287:5400:4ff:fe29:1f39/64 scope global dynamic mngtmpaddr noprefixroute
@@ -284,7 +284,7 @@ traceroute to www.google.com (2a00:1450:4009:81f::2004), 30 hops max, 80 byte pa
             </aside>
         </section>
         <section>
-            <pre><code data-trim data-noescape data-line-numbers="3-4" class="language-shell">$ ip -6 route
+            <pre><code data-trim data-noescape data-line-numbers="3-4" class="language-bash smaller-text">$ ip -6 route
 ::1 dev lo proto kernel metric 256 pref medium
 2001:678:b0c::/48 dev enp1s0 proto kernel metric 256 pref medium
 2001:19f0:7400:8287::/64 dev enp1s0 proto ra metric 1024 expires 2591571sec pref medium
@@ -295,7 +295,7 @@ default via fe80::fc00:4ff:fe29:1f39 dev enp1s0 proto ra metric 1024 expires 137
                 * Note that it knows how to route
             </aside>
         </section>
-        <section><pre><code class="language-shell">$ gobgp global rib -a ipv6
+        <section><pre><code class="language-bash smaller-text">$ gobgp global rib -a ipv6
    Network                  Next Hop             AS_PATH              Age        Attrs
 *> ::/0                     2001:19f0:ffff::1    64515                16:13:23   [{Origin: i} {Med: 0}]
 *> 2001:678:b0c::/48        ::                                        00:10:10   [{Origin: i} {Med: 0}]</code></pre>
@@ -305,7 +305,7 @@ default via fe80::fc00:4ff:fe29:1f39 dev enp1s0 proto ra metric 1024 expires 137
                 * Also the RIB knows about a subnet from the local routing table
             </aside>
         </section>
-        <section><pre><code class="language-shell">$ gobgp ne 2001:19f0:ffff::1 adj-out
+        <section><pre><code class="language-bash smaller-text">$ gobgp ne 2001:19f0:ffff::1 adj-out
 ID  Network                  Next Hop                               AS_PATH              Attrs
 1   2001:678:b0c::/48        2001:19f0:7400:8287:5400:4ff:fe29:1f39 204946               [{Origin: i} {Med: 0}]</code></pre>
             <aside class="notes" data-markdown>
@@ -320,7 +320,7 @@ ID  Network                  Next Hop                               AS_PATH     
             </aside>
         </section>
         <section>
-            <pre><code class="r-stretch language-shell" style="font-size: 0.7em; line-height: 1em;">$ traceroute 2001:678:b0c:0:68:74:74:70
+            <pre><code class="r-stretch language-bash smaller-text">$ traceroute 2001:678:b0c:0:68:74:74:70
 traceroute to 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70), 30 hops max, 80 byte packets
  1  2001:8b0:c8f:e8b0::1 (2001:8b0:c8f:e8b0::1)  1.879 ms  1.986 ms  2.311 ms
  2  x.witless.thn.aa.net.uk (2001:8b0:0:53::133)  8.994 ms  8.558 ms  9.225 ms
@@ -337,7 +337,7 @@ traceroute to 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70), 30 hops m
             </aside>
         </section>
         <section>
-            <pre><code style="font-size: 0.7em; line-height: 1em;" class="r-stretch" data-trim>64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=11 ttl=56 time=8.62 ms
+            <pre><code class="r-stretch even-smaller-text language-bash" data-trim>64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=11 ttl=56 time=8.62 ms
 64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=12 ttl=56 time=8.79 ms
 64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=13 ttl=56 time=8.48 ms
 64 bytes from 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70): icmp_seq=14 ttl=56 time=7.53 ms
@@ -372,7 +372,7 @@ From lag-19.ear3.Amsterdam1.Level3.net (2001:1900:5:3::179) icmp_seq=21 Time exc
             </aside>
         </section>
         <section>
-            <pre><code style="font-size: 0.7em; line-height: 1em;" class="r-stretch">$ traceroute 2001:678:b0c:0:68:74:74:70
+            <pre><code class="r-stretch language-bash smaller-text">$ traceroute 2001:678:b0c:0:68:74:74:70
 traceroute to 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70), 30 hops max, 80 byte packets
  1  2001:8b0:c8f:e8b0::1 (2001:8b0:c8f:e8b0::1)  1.530 ms  2.160 ms  2.476 ms
  2  x.witless.thn.aa.net.uk (2001:8b0:0:53::133)  8.316 ms  8.413 ms  8.731 ms
@@ -386,7 +386,7 @@ traceroute to 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70), 30 hops m
 10  2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70)  96.446 ms  95.966 ms  95.512 ms</code></pre>
         </section>
         <section>
-            <img width="100%" src="img/eafnosupport-us.co.uk.png" />
+            <img width="100%" src="img/eafnosupport-us.co.uk.png"/>
             <aside class="notes" data-markdown>
                 * Now web request hits the us server
             </aside>
@@ -402,7 +402,7 @@ traceroute to 2001:678:b0c:0:68:74:74:70 (2001:678:b0c:0:68:74:74:70), 30 hops m
             </aside>
         </section>
         <section>
-            <img src="img/anycast-traceroute.png" />
+            <img width="50%" src="img/anycast-traceroute.png"/>
             <aside class="notes" data-markdown>
                 * Just to prove it works
             </aside>
